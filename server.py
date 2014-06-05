@@ -17,22 +17,25 @@ class MyHandler(http.server.BaseHTTPRequestHandler):
             filename = request[1:]
         
         self.send_response(200)
+        
+        # Content type korrekt setzen
         if os.path.splitext(filename)[1] == ".js":
             self.send_header("Content-type", "application/javascript")
         if os.path.splitext(filename)[1] == ".css":
             self.send_header("Content-type", "text/css")
         if os.path.splitext(filename)[1] == ".html":
             self.send_header("Content-type", "text/html")
-                    
-        
+        if os.path.splitext(filename)[1] == ".gif":
+            self.send_header("Content-type", "image/gif")
         
         self.end_headers()
         
-        
         if os.path.isfile(filename):
-            f = open(filename, "r")
-            self.wfile.write(f.read().encode("utf-8"))
+            f = open(filename, "rb")
+            self.wfile.write(f.read())
             f.close()
+        else:
+            print(filename + "doesn't exist")
     
     def renderJson(self, obj):
         self.send_response(200)
