@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>GeM Nissan Leaf Diagnostic Interface</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom styles for this template -->
+    <link href="leaf.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#home">GeM Nissan Leaf Diagnostic Interface</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav" data-bind="foreach: pages">
+            <li data-bind="css: {active: $data == $root.chosenPageId()}"><a href="#" data-bind="text: $data, click: $root.goToPage"></a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div data-bind="visible: chosenPageId() == 'Home'" class="container page">
+
+      <div class="starter-template page">
+        <div>
+        <h1>GeM Nissan Leaf Diagnostic Interface</h1>
+        <p class="lead">Here you can read the error memories of the different Nissan Leaf systems.</p>
+        <div class="alert alert-warning" data-bind="text: 'Errors detected: ' + totalNumberOfStoredDtcs(), visible: totalNumberOfStoredDtcs() > 0"></div>
+        <button type="button" class="btn btn-default" data-bind="click: readAllErrorMemories">Read All Error Memories</button>
+        </div>
+        <div data-bind="foreach: ecus">
+          <div class="panel panel-default">
+          <div class="panel-heading">
+            <span class="label label-danger pull-left" data-bind="visible: commFailure">Communication Failure</span>
+            <span data-bind="text: name"></span>
+            <span class="label label-info pull-right" data-bind="text: 'Errors: ' + numberOfStoredDtcs(), visible: numberOfStoredDtcs() > 0"></span>
+          </div>
+          <div class="panel-body">
+          <table class="table table-condensed table-bordered">
+            <thead>
+              <tr><th>DTC</th><th>Description</th></tr>
+            </thead>
+            <tbody data-bind="foreach: storedDtcs">
+              <tr><td data-bind="text: dtc.toString(16)"></td><td data-bind="text: description"></td></tr>
+            </tbody>
+          </table>
+          <button type="button" class="btn btn-default" data-bind="click: readErrorMemory">Read Error Memory</button>
+          <button type="button" class="btn btn-default" data-bind="click: clearErrorMemory, enable: canClearErrorMemory">Clear Error Memory</button>
+          </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /.container -->
+    
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/knockout-3.1.0.js"></script>
+    <script src="js/LeafViewModel.js"></script>
+  </body>
+</html>
