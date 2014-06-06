@@ -27,6 +27,8 @@ class MyHandler(http.server.BaseHTTPRequestHandler):
             self.send_header("Content-type", "text/html")
         if os.path.splitext(filename)[1] == ".gif":
             self.send_header("Content-type", "image/gif")
+        if os.path.splitext(filename)[1] == ".png":
+            self.send_header("Content-type", "image/png")
         
         self.end_headers()
         
