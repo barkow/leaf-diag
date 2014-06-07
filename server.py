@@ -1,3 +1,5 @@
+#!/usr/local/bin/python3.4
+
 import http.server
 import socketserver
 import pprint
@@ -8,13 +10,14 @@ import os
 PORT = 80
 
 class MyHandler(http.server.BaseHTTPRequestHandler):
+    httpdir = "/home/debian/leaf-diag/"
     ecus = dict()
     
     def renderHtml(self, request):
         if request == "/":
-            filename = "index.html"
+            filename = self.httpdir+"index.html"
         else:
-            filename = request[1:]
+            filename = self.httpdir+request[1:]
         
         self.send_response(200)
         
@@ -55,7 +58,7 @@ class MyHandler(http.server.BaseHTTPRequestHandler):
             self.renderError(404, "Ecu not found")
             return
         
-        myEcu = UDSEcu.UDSEcu(self.ecus[ecuId]["rxId"], self.ecus[ecuId]["txId"])
+        myEcu = UDSEcu.UDSEcu("can0", self.ecus[ecuId]["rxId"], self.ecus[ecuId]["txId"])
         success = myEcu.clearStoredErrors()
         if success:
             self.renderJson(True)
@@ -75,7 +78,7 @@ class MyHandler(http.server.BaseHTTPRequestHandler):
             self.renderError(404, "Ecu not found")
             return
         
-        myEcu = UDSEcu.UDSEcu(self.ecus[ecuId]["rxId"], self.ecus[ecuId]["txId"])
+        myEcu = UDSEcu.UDSEcu("can0", self.ecus[ecuId]["rxId"], self.ecus[ecuId]["txId"])
         errors = myEcu.getStoredErrors()
         del myEcu
         if errors == False:

@@ -124,11 +124,11 @@ class UDSEcu(object):
         # data = data.ljust(8, b'\x00')
         return struct.pack(can_frame_fmt, can_id, can_dlc, data)
     
-    def __init__(self, rxId, txId):
+    def __init__(self, interface, rxId, txId):
         self.__s = socket.socket(socket.AF_CAN, socket.SOCK_DGRAM, socket.CAN_ISOTP)
         # Timeout für ausbleibende Responses auf 5s setzen
         self.__s.settimeout(5.0)
-        self.__s.bind(("vcan0",txId, rxId))
+        self.__s.bind((interface, txId, rxId))
         return
     
     def __del__(self):
