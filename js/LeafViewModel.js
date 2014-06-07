@@ -6,9 +6,11 @@ function EcuViewModel(id){
   self.storedDtcs = ko.observableArray();
   self.numberOfStoredDtcs = ko.observable(0);
   self.commFailure = ko.observable(false);
+  self.requestActive = ko.observable(false);
   
   self.readErrorMemory = function(){
     console.log("Read Error Memory of " + self.name());
+    self.requestActive(true);
     $.get("ecus/"+self.id+"/errormemory", function(data) {
       self.storedDtcs.removeAll();
       console.log(data)
@@ -21,12 +23,16 @@ function EcuViewModel(id){
     })
     .fail(function(){
       self.commFailure(true);
+    })
+    .always(function(){
+      self.requestActive(false);
     });
     
   };
   
   self.clearErrorMemory = function(){
     console.log("Clear Error Memory of " + self.name());
+    self.requestActive(true);
     $.ajax({
       url: "ecus/"+self.id+"/errormemory", 
       type: "DELETE"
@@ -36,6 +42,9 @@ function EcuViewModel(id){
     })
     .fail(function(){
       self.commFailure(true);
+    })
+    .always(function(){
+      self.requestActive(false);
     });
     self.readErrorMemory();
   };
@@ -66,6 +75,17 @@ function LeafViewModel() {
         no += element.numberOfStoredDtcs();
       });
       return no;
+    });
+    self.requestActive = ko.computed(function(){
+      isOneRequestActive = false;
+      $.each(self.ecus(), function(index, element){
+        console.log("checkrequestactive");
+        console.log(element.requestActive());
+        if (element.requestActive()){
+          isOneRequestActive = true;
+        }
+      });
+      return isOneRequestActive;
     });
 
     // Behaviours

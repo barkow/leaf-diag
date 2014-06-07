@@ -38,7 +38,7 @@
       </div>
     </div>
 
-    <div data-bind="visible: chosenPageId() == 'Home'" class="container page">
+    <div data-bind="visible: chosenPageId() == 'Home', css : {'request-active': requestActive() }" class="container page">
 
       <div class="starter-template page">
         <div>
@@ -47,7 +47,7 @@
           <img src="pics/logo_green-emotion.png">
         <p class="lead">Here you can read the error memories of the different Nissan Leaf systems.</p>
         <div class="alert alert-warning" data-bind="text: 'Errors detected: ' + totalNumberOfStoredDtcs(), visible: totalNumberOfStoredDtcs() > 0"></div>
-        <button type="button" class="btn btn-default" data-bind="click: readAllErrorMemories">Read All Error Memories</button>
+        <button type="button" class="btn btn-default" data-bind="click: readAllErrorMemories, enable: !requestActive()">Read All Error Memories</button>
         </div>
         <div data-bind="foreach: ecus">
           <div class="panel panel-default">
@@ -65,8 +65,8 @@
               <tr><td data-bind="text: dtc.toString(16)"></td><td data-bind="text: description"></td></tr>
             </tbody>
           </table>
-          <button type="button" class="btn btn-default" data-bind="click: readErrorMemory">Read Error Memory</button>
-          <button type="button" class="btn btn-default" data-bind="click: clearErrorMemory, enable: canClearErrorMemory">Clear Error Memory</button>
+          <button type="button" class="btn btn-default" data-bind="click: readErrorMemory, enable: !$parent.requestActive()">Read Error Memory</button>
+          <button type="button" class="btn btn-default" data-bind="click: clearErrorMemory, enable: canClearErrorMemory() && !$parent.requestActive()">Clear Error Memory</button>
           </div>
           </div>
         </div>

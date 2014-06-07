@@ -6,6 +6,8 @@ import pprint
 import json
 import UDSEcu
 import os
+import sys
+import signal
 
 PORT = 80
 
@@ -40,7 +42,7 @@ class MyHandler(http.server.BaseHTTPRequestHandler):
             self.wfile.write(f.read())
             f.close()
         else:
-            print(filename + "doesn't exist")
+            print(filename + " doesn't exist")
     
     def renderJson(self, obj):
         self.send_response(200)
@@ -153,11 +155,26 @@ ecus = {
     }
 }
 
+# Redirect outputs to log file
+logFileName = "/var/log/leaf-diag.log"
+logFile = open (logFileName, "a")
+sys.stdout = logFile
+sys.stderr = logFile
+
+def signal_handler(signal, frame):
+        print('Stopping leaf-diag server')
+        logFile.close()
+        sys.exit(0)
+
 # Handler = http.server.SimpleHTTPRequestHandler
 Handler = MyHandler
 Handler.ecus = ecus
 socketserver.TCPServer.allow_reuse_address = True
 httpd = socketserver.TCPServer(("", PORT), Handler)
 
+# Signal registrieren
+signal.signal(signal.SIGINT, signal_handler)
+
 print("serving at port", PORT)
 httpd.serve_forever()
+
