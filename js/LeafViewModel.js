@@ -63,7 +63,22 @@ function LeafViewModel() {
     //Submodels
     self.ecus = ko.observableArray([
       new EcuViewModel("ecu1"), 
-      new EcuViewModel("ecu2")
+      new EcuViewModel("ecu2"),
+      new EcuViewModel("ecu3"),
+      new EcuViewModel("ecu4"),
+      new EcuViewModel("ecu5"),
+      new EcuViewModel("ecu6"),
+      new EcuViewModel("ecu7"),
+      new EcuViewModel("ecu8"),
+      new EcuViewModel("ecu9"),
+      new EcuViewModel("ecu10"),
+      new EcuViewModel("ecu11"),
+      new EcuViewModel("ecu12"),
+      new EcuViewModel("ecu13"),
+      new EcuViewModel("ecu14"),
+      new EcuViewModel("ecu15"),
+      new EcuViewModel("ecu16"),
+      new EcuViewModel("ecu17")
     ]);
     
     // Data

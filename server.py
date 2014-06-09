@@ -140,26 +140,28 @@ class MyHandler(http.server.BaseHTTPRequestHandler):
         return
 
 
-ecus = {
-    "ecu1" : {
-        "name" : "Ecu 1", 
-        "txId" : 0x700, 
-        "rxId" : 0x600,
-        "knownDtcs" : {0x112233: "Schütze kleben geblieben"}
-    },
-    "ecu2" : {
-        "name" : "Ecu 2", 
-        "txId" : 0x701, 
-        "rxId" : 0x601,
-        "knownDtcs" : {}
-    }
-}
+#ecus = {
+#    "ecu1" : {
+#        "name" : "Ecu 1", 
+#        "txId" : 0x700, 
+#        "rxId" : 0x600,
+#        "knownDtcs" : {0x112233: "Schütze kleben geblieben"}
+#    },
+#    "ecu2" : {
+#        "name" : "Ecu 2", 
+#        "txId" : 0x701, 
+#        "rxId" : 0x601,
+#        "knownDtcs" : {}
+#    }
+#}
+
+from ecus import ecus
 
 # Redirect outputs to log file
 logFileName = "/var/log/leaf-diag.log"
 logFile = open (logFileName, "a")
-sys.stdout = logFile
-sys.stderr = logFile
+#sys.stdout = logFile
+#sys.stderr = logFile
 
 def signal_handler(signal, frame):
         print('Stopping leaf-diag server')
