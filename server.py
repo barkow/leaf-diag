@@ -160,8 +160,8 @@ from ecus import ecus
 # Redirect outputs to log file
 logFileName = "/var/log/leaf-diag.log"
 logFile = open (logFileName, "a")
-#sys.stdout = logFile
-#sys.stderr = logFile
+sys.stdout = logFile
+sys.stderr = logFile
 
 def signal_handler(signal, frame):
         print('Stopping leaf-diag server')
